@@ -12,7 +12,7 @@ use strict;
 use warnings;
 use base qw(Exporter);
 
-our @EXPORT = qw(new dsw_start dsw_end HTM_div HTM_pre HTM_p jscript any);
+our @EXPORT = qw(new dsw_start dsw_end HTM_div HTM_p HTM_pre HTM_li HTM_ul jscript any);
 
 sub new {
     my $class = shift;
@@ -75,7 +75,7 @@ sub HTM_p {
         $oi = "id='".substr($z,2,length($z))."'";       # Id attribute
     }
     $o = "<p ${oi} ${oc}>${x}</p>";                    	# Return formatted output
-	print $o;													# Output element
+	print $o;											# Output element
 }
 
 # -- Output HTML pre element <pre> -- #
@@ -104,17 +104,71 @@ sub HTM_pre {
     $o = "<pre ${oi} ${oc}>${x}</pre>";                 # Return formatted output
 	print $o;											# Output element
 }
+# -- Output HTML list item element <li> -- #
+#	 PARAM: String	| Text string to be output
+#	 PARAM: String	| Id/Class attribute	(Optional)
+#	 PARAM: String	| Id/Class attribute	(Optional)
+# --
+sub HTM_li {
+	my($x,$y,$z,$p,$o,$oi,$oc);
+    $oi = ""; $oc = "";
+    $x = (exists $_[0]) ? $_[0] : "";
+    $y = (exists $_[1]) ? $_[1] : "";
+    $z = (exists $_[2]) ? $_[2] : "";
+	$p = uc(substr($y,0,2));                            # Type identifier
+    if($p eq "I="){
+        $oi = "id='".substr($y,2,length($y))."'";       # Id attribute
+    } elsif($p eq "C="){
+        $oc = "class='".substr($y,2,length($y))."''"    # Class attribute
+    }
+    $p = substr($z,0,2);                                # Type identifier
+    if($p eq "C="){                     
+        $oc = "class='".substr($z,2,length($z))."'";    # Class attribute
+    } elsif($p eq "I="){
+        $oi = "id='".substr($z,2,length($z))."'";       # Id attribute
+    }
+    $o = "<li ${oi} ${oc}>${x}</li>";                 	# Return formatted output
+	print $o;											# Output element
+}
+
+# -- Output HTML unordered list element <ul> -- #
+#	 PARAM: String	| Text string to be output
+#	 PARAM: String	| Id/Class attribute	(Optional)
+#	 PARAM: String	| Id/Class attribute	(Optional)
+# --
+sub HTM_ul {
+	my($x,$y,$z,$p,$o,$oi,$oc);
+    $oi = ""; $oc = "";
+    $x = (exists $_[0]) ? $_[0] : "";
+    $y = (exists $_[1]) ? $_[1] : "";
+    $z = (exists $_[2]) ? $_[2] : "";
+	$p = uc(substr($y,0,2));                            # Type identifier
+    if($p eq "I="){
+        $oi = "id='".substr($y,2,length($y))."'";       # Id attribute
+    } elsif($p eq "C="){
+        $oc = "class='".substr($y,2,length($y))."''"    # Class attribute
+    }
+    $p = substr($z,0,2);                                # Type identifier
+    if($p eq "C="){                     
+        $oc = "class='".substr($z,2,length($z))."'";    # Class attribute
+    } elsif($p eq "I="){
+        $oi = "id='".substr($z,2,length($z))."'";       # Id attribute
+    }
+    $o = "<ul ${oi} ${oc}>${x}</ul>";                 	# Return formatted output
+	print $o;											# Output element
+}
 
 # -- Include external script -- #
 #	 PARAM:	STRING
 #	 Accepts script location to be included in document
 # --
 sub jscript {
-    my($x) = $_[0];
-    if($x eq ""){
+    my($x,$o) = $_[0];
+    if($x eq ""){										# Check not empty
     } else { 
-        print "<script src='$x'></script>";
-    }
+        $o = "<script src='$x'></script>";				
+		print $o;										# Return script include
+	}
 }
 
 # -- Output any HTML5 element -- #
