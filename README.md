@@ -1,4 +1,4 @@
-#CGI-DSW
+#CGI::DSW
 
 ##"Dead Simple Web"
 Perl HTML5 Web Extension to CGI::Base 
